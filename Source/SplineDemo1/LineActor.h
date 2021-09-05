@@ -21,6 +21,9 @@ public:
 		class UMaterial* MeshMaterial;
 
 	int m_nIndex;
+	
+	UFUNCTION(BlueprintCallable)
+	void Update2DOFKnee(TArray<FVector> nodes, FVector targetPos, FVector direction, TArray<FVector>& OutNodes);
 
 protected:
 	// Called when the game starts or when spawned
