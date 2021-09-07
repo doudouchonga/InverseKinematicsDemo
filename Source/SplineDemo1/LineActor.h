@@ -25,6 +25,11 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void Update2DOFKnee(TArray<FVector> nodes, FVector targetPos, FVector direction, TArray<FVector>& OutNodes);
 
+	UFUNCTION(BlueprintCallable)
+	void UpdateCCDIK(TArray<FVector> nodes, FVector targetPos, FVector direction, TArray<FVector>& OutNodes);
+
+	void UpdatePoints(TArray<FVector>& nodes, int i, FVector NewPos);
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

@@ -26,7 +26,7 @@ void ALineActor::Update2DOFKnee(TArray<FVector> nodes, FVector targetPos, FVecto
 	{
 		return;
 	}
-
+	
 	FVector start = FVector(0);//GetActorLocation(); 
 	FVector end = targetPos;
 
@@ -57,6 +57,86 @@ void ALineActor::Update2DOFKnee(TArray<FVector> nodes, FVector targetPos, FVecto
 	outNodes.Add(p0);
 	outNodes.Add(p1);
 	outNodes.Add(p2);
+}
+
+void ALineActor::UpdateCCDIK(TArray<FVector> nodes, FVector targetPos, FVector direction, TArray<FVector>& OutNodes)
+{
+	int TotalNum = nodes.Num();
+	if (TotalNum == 0)
+	{
+		return;
+	}
+	int iteraterCount = 0;
+	FVector EndEffectPos = nodes[TotalNum - 1];
+	TArray<FVector> rets;
+	for (FVector& v : nodes)
+	{
+		rets.Add(v);
+	}
+
+	for (int i = TotalNum - 1; i >= 0; --i)
+	{
+		float error = (targetPos - EndEffectPos).Size();
+		if (error < 0.001f)
+		{
+			break;
+		}
+		FVector p0 = i > 0 ? nodes[i - 1] : FVector(0);
+		FVector p1 = nodes[i];
+
+		FVector v0 = EndEffectPos - p0;
+		FVector v1 = targetPos - p0;
+
+		v0.Normalize();
+		v1.Normalize();
+
+		float dot = FVector::DotProduct(v0, v1);
+		dot = TMathUtil<float>::Clamp(dot, -1, 1);
+		float ang = FMath::RadiansToDegrees(TMathUtil<float>::ACos(dot));
+
+		if (FMath::Abs(ang) > 0.0001f)
+		{
+			FVector rotAxis = FVector::CrossProduct(v0, v1);
+			if (rotAxis.SizeSquared() > 0)
+			{
+				rotAxis.Normalize();
+
+				FVector es = p1 - p0;
+				// float l0 = es.Size();
+				FVector newPos = p0 + es.RotateAngleAxis(ang, rotAxis);
+				UpdatePoints(rets, i, newPos);
+
+			}
+		}
+
+	}
+
+	for (FVector& v : rets)
+	{
+		OutNodes.Add(v);
+	}
+
+}
+
+void ALineActor::UpdatePoints(TArray<FVector>& nodes, int k, FVector NewPos)
+{
+	if (k >= 0 && k < nodes.Num())
+	{
+		FVector CurPos = nodes[k];
+		if (k < nodes.Num() - 1)
+		{
+			// 接着更新下一个位置的点，方向保持不变
+			FVector NextPos = nodes[k + 1];
+			FVector es = NextPos - CurPos;
+			nodes[k] = NewPos;
+			FVector NextNewPos = NewPos + es;
+			UpdatePoints(nodes, k+1, NextNewPos);
+		}
+		else
+		{
+			nodes[k] = NewPos;
+		}
+	}
 }
 
 // Called when the game starts or when spawned
