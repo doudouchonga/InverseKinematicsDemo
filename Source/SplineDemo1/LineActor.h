@@ -30,6 +30,12 @@ public:
 
 	void UpdatePoints(TArray<FVector>& nodes, int i, FVector NewPos);
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int UpdateStep{0};
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool UseBounce{ true};
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

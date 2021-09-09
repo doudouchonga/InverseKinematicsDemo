@@ -66,23 +66,28 @@ void ALineActor::UpdateCCDIK(TArray<FVector> nodes, FVector targetPos, FVector d
 	{
 		return;
 	}
-	int iteraterCount = 0;
-	FVector EndEffectPos = nodes[TotalNum - 1];
-	TArray<FVector> rets;
-	for (FVector& v : nodes)
+
+	if (UpdateStep < 0)
 	{
-		rets.Add(v);
+		OutNodes = nodes;
+		return;
 	}
 
+	int iteraterCount = 0;
+	
+	TArray<FVector> rets = nodes;
+	
 	for (int i = TotalNum - 1; i >= 0; --i)
 	{
+		FVector EndEffectPos = rets[TotalNum - 1];
+
 		float error = (targetPos - EndEffectPos).Size();
-		if (error < 0.001f)
+		if (error < 0.0001f)
 		{
 			break;
 		}
-		FVector p0 = i > 0 ? nodes[i - 1] : FVector(0);
-		FVector p1 = nodes[i];
+		FVector p0 = i > 0 ? rets[i - 1] : FVector(0);
+		FVector p1 = rets[i];
 
 		FVector v0 = EndEffectPos - p0;
 		FVector v1 = targetPos - p0;
@@ -94,7 +99,7 @@ void ALineActor::UpdateCCDIK(TArray<FVector> nodes, FVector targetPos, FVector d
 		dot = TMathUtil<float>::Clamp(dot, -1, 1);
 		float ang = FMath::RadiansToDegrees(TMathUtil<float>::ACos(dot));
 
-		if (FMath::Abs(ang) > 0.0001f)
+		if (FMath::Abs(ang) > 0.1f)
 		{
 			FVector rotAxis = FVector::CrossProduct(v0, v1);
 			if (rotAxis.SizeSquared() > 0)
@@ -102,19 +107,33 @@ void ALineActor::UpdateCCDIK(TArray<FVector> nodes, FVector targetPos, FVector d
 				rotAxis.Normalize();
 
 				FVector es = p1 - p0;
-				// float l0 = es.Size();
+				// 
 				FVector newPos = p0 + es.RotateAngleAxis(ang, rotAxis);
+				// 
 				UpdatePoints(rets, i, newPos);
-
+				
 			}
+
+			// Bounce back to end
+			if (UseBounce)
+			{
+				i = TotalNum;
+			}
+			
 		}
 
+		// For DEBUG Update step
+		if ((TotalNum - 1 - i) == UpdateStep)
+		{
+			break;
+		}
 	}
 
-	for (FVector& v : rets)
-	{
-		OutNodes.Add(v);
-	}
+	OutNodes = rets;
+	//for (FVector& v : rets)
+	//{
+	//	OutNodes.Add(v);
+	//}
 
 }
 
