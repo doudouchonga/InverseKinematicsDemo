@@ -78,7 +78,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<FVConstrain> Constrains;
 	
+	UFUNCTION(BlueprintCallable)
 	void Velet();
+	UFUNCTION(BlueprintCallable)
 	void SolveDistance();
 
 	UFUNCTION(BlueprintCallable)
@@ -91,7 +93,8 @@ public:
 	void BuildConstrain(int x, int y);
 
 	void SolveDistance(FVConstrain& Constrain);
-
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float DisierDistance{10};
 
 protected:
 	// Called when the game starts or when spawned

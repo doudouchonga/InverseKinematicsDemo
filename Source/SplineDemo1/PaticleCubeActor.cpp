@@ -55,9 +55,7 @@ void APaticleCubeActor::SolveDistance(FVConstrain& Constrain)
 	FVParticle* particleB = &Particles[Constrain.iparticleB];
 
 	if (particleA == nullptr || particleB == nullptr) return;
-
-	float DisierDistance = 0;
-
+	
 	FVector Delta = particleB->CurPos - particleA->CurPos;
 
 	float CurrentDistance = Delta.Size();
@@ -112,10 +110,6 @@ void APaticleCubeActor::BuildConstrain(int x, int y)
 	item.iparticleA = x;
 	item.iparticleB = y;
 	Constrains.Add(item);
-
-	FVParticle* particleB = &Particles[y];
-	particleB->TargetPos = particleB->CurPos;
-	particleB->TargetPos.X = 0;
 
 }
 
