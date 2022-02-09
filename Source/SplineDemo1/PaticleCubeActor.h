@@ -87,7 +87,7 @@ public:
 		void CreateParticle(FVector pos, bool free);
 
 	UFUNCTION(BlueprintCallable)
-		void SetParticleTargetPos(int x, FVector pos);
+		void SetParticleTargetPos(int x, FVector pos, float time = 3.0f);
 
 	UFUNCTION(BlueprintCallable)
 	void BuildConstrain(int x, int y);

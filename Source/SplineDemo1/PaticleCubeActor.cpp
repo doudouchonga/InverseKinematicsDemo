@@ -85,7 +85,7 @@ void APaticleCubeActor::CreateParticle(FVector pos, bool free)
 	Particles.Add(item);
 }
 
-void APaticleCubeActor::SetParticleTargetPos(int x, FVector pos)
+void APaticleCubeActor::SetParticleTargetPos(int x, FVector pos, float time)
 {
 	if (x < 0 || x >= Particles.Num())
 	{
@@ -93,6 +93,8 @@ void APaticleCubeActor::SetParticleTargetPos(int x, FVector pos)
 	}
 	FVParticle& particleA = Particles[x];
 	particleA.SetTargetPos(pos);
+
+	particleA.Speed = FVector::Distance(particleA.TargetPos, particleA.CurPos) / time;
 
 }
 
