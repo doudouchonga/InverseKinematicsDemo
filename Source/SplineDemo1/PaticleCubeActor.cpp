@@ -40,6 +40,41 @@ void APaticleCubeActor::Velet()
 	}
 }
 
+
+
+void APaticleCubeActor::VeletDelta(float distance, float delta)
+{
+	for (int32 i = 0; i < Particles.Num(); i++)
+	{
+		if (!Particles[i].bFree)
+		{
+			continue;
+		}
+		// Find vel
+		const FVector Vel = Particles[i].CurPos - Particles[i].OldPos;
+		FVector TargetPosition = Particles[i].TargetPos - Particles[i].CurPos;
+		TargetPosition.Normalize();
+
+		float TargetDis = FVector::Distance(Particles[i].TargetPos, Particles[i].CurPos);
+		float LastDistance = FVector::Distance(Particles[i - 1].TargetPos, Particles[i - 1].CurPos);
+
+		float Speed = Particles[i].Speed * TargetDis / LastDistance;
+		
+		// Update position
+		FVector NewPosition = Particles[i].CurPos + Vel + (Speed * TargetPosition * delta);
+
+		float MoveDis = FVector::Distance(NewPosition, Particles[i].CurPos);
+
+		if (MoveDis >= TargetDis)
+		{
+			NewPosition = TargetPosition;
+		}
+
+		Particles[i].OldPos = Particles[i].CurPos;
+		Particles[i].CurPos = NewPosition;
+	}
+}
+
 void APaticleCubeActor::SolveDistance()
 {
 	for (FVConstrain& item : Constrains)
@@ -94,8 +129,8 @@ void APaticleCubeActor::SetParticleTargetPos(int x, FVector pos, float time)
 	FVParticle& particleA = Particles[x];
 	particleA.SetTargetPos(pos);
 
-	particleA.Speed = FVector::Distance(particleA.TargetPos, particleA.CurPos) / time;
-
+	// particleA.Speed = FVector::Distance(particleA.TargetPos, particleA.CurPos) / time;
+	particleA.Speed = time;
 }
 
 void APaticleCubeActor::BuildConstrain(int x, int y)

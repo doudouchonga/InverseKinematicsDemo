@@ -80,6 +80,10 @@ public:
 	
 	UFUNCTION(BlueprintCallable)
 	void Velet();
+
+	UFUNCTION(BlueprintCallable)
+		void VeletDelta(float distance, float delta);
+
 	UFUNCTION(BlueprintCallable)
 	void SolveDistance();
 
