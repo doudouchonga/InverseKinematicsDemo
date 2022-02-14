@@ -57,8 +57,11 @@ void APaticleCubeActor::VeletDelta(float distance, float delta)
 
 		float TargetDis = FVector::Distance(Particles[i].TargetPos, Particles[i].CurPos);
 		float LastDistance = FVector::Distance(Particles[i - 1].TargetPos, Particles[i - 1].CurPos);
-
-		float Speed = Particles[i].Speed * TargetDis / LastDistance;
+		float Speed = Particles[i].Speed;
+		if (LastDistance > 0 && TargetDis > 0)
+		{
+			Speed = Particles[i].Speed * TargetDis / LastDistance;
+		}
 		
 		// Update position
 		FVector NewPosition = Particles[i].CurPos + Vel + (Speed * TargetPosition * delta);
@@ -67,7 +70,7 @@ void APaticleCubeActor::VeletDelta(float distance, float delta)
 
 		if (MoveDis >= TargetDis)
 		{
-			NewPosition = TargetPosition;
+			NewPosition = Particles[i].TargetPos;
 		}
 
 		Particles[i].OldPos = Particles[i].CurPos;
