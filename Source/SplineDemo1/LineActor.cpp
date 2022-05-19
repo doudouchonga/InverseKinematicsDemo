@@ -8,6 +8,8 @@
 #include "../Plugins/Runtime/ProceduralMeshComponent/Source/ProceduralMeshComponent/Public/ProceduralMeshComponent.h"
 #include "../Plugins/Experimental/GeometryProcessing/Source/GeometricObjects/Public/MathUtil.h"
 
+#include <type_traits>
+
 // Sets default values
 ALineActor::ALineActor()
 {
@@ -144,7 +146,7 @@ void ALineActor::UpdatePoints(TArray<FVector>& nodes, int k, FVector NewPos)
 		FVector CurPos = nodes[k];
 		if (k < nodes.Num() - 1)
 		{
-			// 接着更新下一个位置的点，方向保持不变
+			// 锟斤拷锟脚革拷锟斤拷锟斤拷一锟斤拷位锟矫的点，锟斤拷锟津保持诧拷锟斤拷
 			FVector NextPos = nodes[k + 1];
 			FVector es = NextPos - CurPos;
 			nodes[k] = NewPos;
@@ -172,6 +174,17 @@ void ALineActor::BeginPlay()
 void ALineActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	
+}
 
+
+ATestActor::ATestActor()
+{
+	
+}
+
+void ATestActor::BeginPlay()
+{
+	
 }
 

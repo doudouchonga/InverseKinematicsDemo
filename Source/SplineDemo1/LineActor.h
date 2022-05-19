@@ -45,3 +45,20 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 };
+
+
+UCLASS()
+class SPLINEDEMO1_API ATestActor : public AActor
+{
+	GENERATED_BODY()
+	
+public:
+	ATestActor();
+
+protected:
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+	
+
+	
+};

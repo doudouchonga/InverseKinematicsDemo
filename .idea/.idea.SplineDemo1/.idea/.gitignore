@@ -1,0 +1,13 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+# Rider ignored files
+/modules.xml
+/projectSettingsUpdater.xml
+/contentModel.xml
+/.idea.SplineDemo1.iml
+# Datasource local storage ignored files
+/../../../../../../../:\Unreal Projects\IKDemo\InverseKinematicsDemo\.idea\.idea.SplineDemo1\.idea/dataSources/
+/dataSources.local.xml
+# Editor-based HTTP Client requests
+/httpRequests/
