@@ -46,6 +46,10 @@ void APaticleCubeActor::VeletDelta(float distance, float delta)
 {
 	for (int32 i = 0; i < Particles.Num(); i++)
 	{
+		if (i == 0)
+		{
+			continue;
+		}
 		if (!Particles[i].bFree)
 		{
 			continue;
