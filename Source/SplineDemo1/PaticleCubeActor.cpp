@@ -68,7 +68,7 @@ void APaticleCubeActor::VeletDelta(float distance, float delta)
 		}
 		
 		// Update position
-		FVector NewPosition = Particles[i].CurPos + Vel + (Speed * TargetPosition * delta);
+		FVector NewPosition = Particles[i].CurPos + (Vel + Speed * TargetPosition) * delta;
 
 		float MoveDis = FVector::Distance(NewPosition, Particles[i].CurPos);
 
@@ -173,7 +173,11 @@ void APaticleCubeActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	Velet();
-	SolveDistance();
+	if (bTickVelet)
+	{
+		Velet();
+		SolveDistance();
+	}
+	
 
 }

@@ -15,7 +15,7 @@ struct FVParticle
 		OldPos(0, 0, 0),
 		CurPos(0, 0, 0)
 	{}
-
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bFree;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FVector OldPos;
@@ -99,6 +99,9 @@ public:
 	void SolveDistance(FVConstrain& Constrain);
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float DisierDistance{10};
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool bTickVelet{false};
 
 protected:
 	// Called when the game starts or when spawned
