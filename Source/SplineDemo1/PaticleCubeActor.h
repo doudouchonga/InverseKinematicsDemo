@@ -94,6 +94,9 @@ public:
 		void SetParticleTargetPos(int x, FVector pos, float time = 3.0f);
 
 	UFUNCTION(BlueprintCallable)
+		void SetParticleProperty(int x, FVector pos, bool free);
+
+	UFUNCTION(BlueprintCallable)
 	void BuildConstrain(int x, int y);
 
 	void SolveDistance(FVConstrain& Constrain);

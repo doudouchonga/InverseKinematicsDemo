@@ -140,6 +140,20 @@ void APaticleCubeActor::SetParticleTargetPos(int x, FVector pos, float time)
 	particleA.Speed = time;
 }
 
+void APaticleCubeActor::SetParticleProperty(int x, FVector pos, bool free)
+{
+	if (x < 0 || x >= Particles.Num())
+	{
+		return;
+	}
+
+	FVParticle item;
+	item.CurPos = pos;
+	item.OldPos = pos;
+	item.bFree = free;
+	Particles[x] = item;
+}
+
 void APaticleCubeActor::BuildConstrain(int x, int y)
 {
 	if (x < 0 || x >= Particles.Num())
