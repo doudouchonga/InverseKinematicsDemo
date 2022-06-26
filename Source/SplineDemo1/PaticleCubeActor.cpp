@@ -42,6 +42,40 @@ void APaticleCubeActor::Velet()
 
 
 
+void APaticleCubeActor::VeletPercent(float percent)
+{
+	if (InTargets.Num() <= 0)
+	{
+		return;
+	}
+	if (InTargetIndex <= 0)
+	{
+		return;
+	}
+
+	for (int32 i = 0; i < Particles.Num(); i++)
+	{
+		if (!Particles[i].bFree)
+		{
+			continue;
+		}
+
+		APaticleCubeActor* T1 = InTargets[InTargetIndex - 1];
+		APaticleCubeActor* T2 = InTargets[InTargetIndex];
+
+		FVector TargetPosition = T2->Particles[i].CurPos - T1->Particles[i].CurPos;
+		Particles[i].Percent += percent;
+		Particles[i].Percent = FMathf::Min(1.0f, Particles[i].Percent);
+
+		float TargetDistance = FVector::Distance(T2->Particles[i].CurPos, T1->Particles[i].CurPos);
+		TargetPosition.Normalize();
+		// Update position
+		const FVector NewPosition = T1->Particles[i].CurPos + TargetDistance * Particles[i].Percent * TargetPosition;
+		Particles[i].OldPos = Particles[i].CurPos;
+		Particles[i].CurPos = NewPosition;
+	}
+}
+
 void APaticleCubeActor::VeletDelta(float distance, float delta)
 {
 	for (int32 i = 0; i < Particles.Num(); i++)
@@ -68,7 +102,7 @@ void APaticleCubeActor::VeletDelta(float distance, float delta)
 		}
 		
 		// Update position
-		FVector NewPosition = Particles[i].CurPos + (Vel + Speed * TargetPosition) * delta;
+		FVector NewPosition = Particles[i].CurPos + Vel + (Speed * TargetPosition) * delta;
 
 		float MoveDis = FVector::Distance(NewPosition, Particles[i].CurPos);
 
@@ -133,9 +167,10 @@ void APaticleCubeActor::SetParticleTargetPos(int x, FVector pos, float time)
 	{
 		return;
 	}
+
 	FVParticle& particleA = Particles[x];
 	particleA.SetTargetPos(pos);
-
+	particleA.InitPos = particleA.CurPos;
 	// particleA.Speed = FVector::Distance(particleA.TargetPos, particleA.CurPos) / time;
 	particleA.Speed = time;
 }
@@ -152,6 +187,14 @@ void APaticleCubeActor::SetParticleProperty(int x, FVector pos, bool free)
 	item.OldPos = pos;
 	item.bFree = free;
 	Particles[x] = item;
+}
+
+void APaticleCubeActor::ResetParticlePercent()
+{
+	for (FVParticle& elm : Particles)
+	{
+		elm.Percent = 0;
+	}
 }
 
 void APaticleCubeActor::BuildConstrain(int x, int y)

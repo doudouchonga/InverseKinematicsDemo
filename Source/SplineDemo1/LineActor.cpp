@@ -160,6 +160,26 @@ void ALineActor::UpdatePoints(TArray<FVector>& nodes, int k, FVector NewPos)
 	}
 }
 
+void ALineActor::OnConstruction(const FTransform& Transform)
+{
+	if (UBlueprint* bl = Cast<UBlueprint>(GetClass()->ClassGeneratedBy))
+	{
+		// TArray<UEdGraph*> UbergraphPages;
+		for (UEdGraph* graph : bl->UbergraphPages)
+		{
+			// TArray<class UEdGraphNode*> Nodes;
+			for (UEdGraphNode* node : graph->Nodes)
+			{
+				FGuid guid = node->NodeGuid;
+				TArray<UEdGraphPin*> t = node->GetAllPins();
+				for (UEdGraphPin * p : t)
+				{
+				}
+			}
+		}
+	}
+}
+
 // Called when the game starts or when spawned
 void ALineActor::BeginPlay()
 {

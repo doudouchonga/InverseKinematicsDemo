@@ -36,9 +36,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool UseBounce{ true};
 
+
+	void OnConstruction(const FTransform& Transform) override;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
 
 public:	
 	// Called every frame

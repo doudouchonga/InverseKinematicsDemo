@@ -18,6 +18,8 @@ struct FVParticle
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bFree;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FVector InitPos;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FVector OldPos;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FVector CurPos;
@@ -25,6 +27,8 @@ struct FVParticle
 	FVector TargetPos;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float Speed{0.1f};
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float Percent{ 0.0f };
 
 	void SetTargetPos(FVector pos)
 	{
@@ -82,6 +86,9 @@ public:
 	void Velet();
 
 	UFUNCTION(BlueprintCallable)
+		void VeletPercent(float percent);
+
+	UFUNCTION(BlueprintCallable)
 		void VeletDelta(float distance, float delta);
 
 	UFUNCTION(BlueprintCallable)
@@ -97,6 +104,9 @@ public:
 		void SetParticleProperty(int x, FVector pos, bool free);
 
 	UFUNCTION(BlueprintCallable)
+		void ResetParticlePercent();
+
+	UFUNCTION(BlueprintCallable)
 	void BuildConstrain(int x, int y);
 
 	void SolveDistance(FVConstrain& Constrain);
@@ -106,6 +116,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool bTickVelet{false};
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TArray<APaticleCubeActor*> InTargets;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int InTargetIndex{1};
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
