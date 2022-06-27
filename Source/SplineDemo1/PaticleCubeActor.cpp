@@ -63,14 +63,16 @@ void APaticleCubeActor::VeletPercent(float percent)
 		APaticleCubeActor* T1 = InTargets[InTargetIndex - 1];
 		APaticleCubeActor* T2 = InTargets[InTargetIndex];
 
-		FVector TargetPosition = T2->Particles[i].CurPos - T1->Particles[i].CurPos;
+		FVector P2 = T2->Particles[i].CurPos - T2->Particles[0].CurPos;
+		FVector P1 = T1->Particles[i].CurPos - T1->Particles[0].CurPos;
+		FVector TargetPosition = P2 - P1;
 		Particles[i].Percent += percent;
 		Particles[i].Percent = FMathf::Min(1.0f, Particles[i].Percent);
 
-		float TargetDistance = FVector::Distance(T2->Particles[i].CurPos, T1->Particles[i].CurPos);
+		float TargetDistance = FVector::Distance(P1, P2);
 		TargetPosition.Normalize();
 		// Update position
-		const FVector NewPosition = T1->Particles[i].CurPos + TargetDistance * Particles[i].Percent * TargetPosition;
+		const FVector NewPosition = P1 + TargetDistance * Particles[i].Percent * TargetPosition + Particles[0].CurPos;
 		Particles[i].OldPos = Particles[i].CurPos;
 		Particles[i].CurPos = NewPosition;
 	}
