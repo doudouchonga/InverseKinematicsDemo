@@ -30,6 +30,10 @@ struct FVParticle
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float Percent{ 0.0f };
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FVector VeletDeltaPos;
+	
+
 	void SetTargetPos(FVector pos)
 	{
 		TargetPos = pos;

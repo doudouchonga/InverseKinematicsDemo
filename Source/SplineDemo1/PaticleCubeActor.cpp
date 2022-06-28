@@ -80,6 +80,11 @@ void APaticleCubeActor::VeletPercent(float percent)
 
 void APaticleCubeActor::VeletDelta(float distance, float delta)
 {
+	if (InTargets.Num() <= 0)
+	{
+		return;
+	}
+
 	for (int32 i = 0; i < Particles.Num(); i++)
 	{
 		if (i == 0)
@@ -95,16 +100,24 @@ void APaticleCubeActor::VeletDelta(float distance, float delta)
 		FVector TargetPosition = Particles[i].TargetPos - Particles[i].CurPos;
 		TargetPosition.Normalize();
 
-		float TargetDis = FVector::Distance(Particles[i].TargetPos, Particles[i].CurPos);
+		APaticleCubeActor* T1 = InTargets[InTargetIndex - 1];
+		APaticleCubeActor* T2 = InTargets[InTargetIndex];
+
+		// float TargetDis = FVector::Distance(Particles[i].TargetPos, Particles[i].CurPos);
+
+		FVector P2 = T2->Particles[i].CurPos - T2->Particles[0].CurPos;
+		FVector P1 = T1->Particles[i].CurPos - T1->Particles[0].CurPos;
+		float TargetDis = FVector::Distance(P2, P1);
+
 		float LastDistance = FVector::Distance(Particles[i - 1].TargetPos, Particles[i - 1].CurPos);
 		float Speed = Particles[i].Speed;
-		if (LastDistance > 0 && TargetDis > 0)
+		/*if (LastDistance > 0 && TargetDis > 0)
 		{
 			Speed = Particles[i].Speed * TargetDis / LastDistance;
-		}
+		}*/
 		
-		// Update position
-		FVector NewPosition = Particles[i].CurPos + Vel + (Speed * TargetPosition) * delta;
+		// Update position Vel + Vel +
+		FVector NewPosition = Particles[i].CurPos + (Speed * TargetPosition * TargetDis) * delta;
 
 		float MoveDis = FVector::Distance(NewPosition, Particles[i].CurPos);
 
@@ -112,9 +125,10 @@ void APaticleCubeActor::VeletDelta(float distance, float delta)
 		{
 			NewPosition = Particles[i].TargetPos;
 		}
-
+		Particles[i].VeletDeltaPos = NewPosition;
 		Particles[i].OldPos = Particles[i].CurPos;
 		Particles[i].CurPos = NewPosition;
+
 	}
 }
 
