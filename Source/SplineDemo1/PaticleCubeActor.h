@@ -113,6 +113,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void BuildConstrain(int x, int y);
 
+	UFUNCTION(BlueprintCallable)
+		void ResetParticles();
+
 	void SolveDistance(FVConstrain& Constrain);
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float DisierDistance{10};
@@ -131,5 +134,6 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
 
 };

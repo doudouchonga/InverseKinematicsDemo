@@ -100,8 +100,8 @@ void APaticleCubeActor::VeletDelta(float distance, float delta)
 		FVector TargetPosition = Particles[i].TargetPos - Particles[i].CurPos;
 		TargetPosition.Normalize();
 
-		APaticleCubeActor* T1 = InTargets[InTargetIndex - 1];
-		APaticleCubeActor* T2 = InTargets[InTargetIndex];
+		APaticleCubeActor* T1 = InTargets[0];
+		APaticleCubeActor* T2 = InTargets[InTargets.Num() - 1];
 
 		// float TargetDis = FVector::Distance(Particles[i].TargetPos, Particles[i].CurPos);
 
@@ -139,6 +139,14 @@ void APaticleCubeActor::SolveDistance()
 		SolveDistance(item);
 	}
 
+}
+
+void APaticleCubeActor::ResetParticles()
+{
+	for (FVParticle& p : Particles)
+	{
+		p.OldPos = p.CurPos;
+	}
 }
 
 void APaticleCubeActor::SolveDistance(FVConstrain& Constrain)
